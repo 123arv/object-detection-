@@ -9,26 +9,25 @@ import matplotlib.pyplot as plt
 import datetime
 import pandas as pd
 
-# Initialize pyttsx3 for text-to-speech
+
 engine = pyttsx3.init()
 engine.setProperty('rate', 150)
 
-# Threshold settings
+
 thres = 0.45
 nms_threshold = 0.2
 
-# Load class names
+
 classNames = []
 classFile = 'coco.names'
 with open(classFile, 'rt') as f:
     classNames = f.read().rstrip('\n').split('\n')
 
-# Load model configuration and weights
+
 configPath = 'ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt'
 weightsPath = 'frozen_inference_graph.pb'
 net = cv2.dnn.readNet(weightsPath, configPath)
 
-# Flag to control the object detection loop
 stop_detection = False
 last_detected_class = ""
 detection_lock = threading.Lock()
@@ -110,13 +109,13 @@ def start_object_detection():
 
         cv2.imshow('Output', img)
 
-        # Check for key presses
+        
         key = cv2.waitKey(1) & 0xFF
-        if key == ord('c'):  # Open Wikipedia if 'C' is pressed
+        if key == ord('c'): 
             open_wikipedia(last_detected_class)
-        if key == ord('n'):  # Open Google Maps if 'N' is pressed
+        if key == ord('n'):  
             open_google_maps(last_detected_class)
-        if key == ord('q'):  # Stop detection if 'Q' is pressed
+        if key == ord('q'):  
             stop_detection = True
             break
 
@@ -180,7 +179,7 @@ def open_settings():
     settings_window.title("Settings")
     settings_window.geometry("300x300")
 
-    # Color selection
+   
     color_label = tk.Label(settings_window, text="Choose Background Color:")
     color_label.pack(pady=10)
 
@@ -190,7 +189,7 @@ def open_settings():
     light_color.pack()
     dark_color.pack()
 
-    # Font selection
+  
     font_label = tk.Label(settings_window, text="Choose Font Size:")
     font_label.pack(pady=10)
 
@@ -246,20 +245,20 @@ def show_help():
     )
     messagebox.showinfo("Help", help_text)
 
-# Create main Tkinter window
+
 root = tk.Tk()
 root.title("Object Detection Application")
 root.geometry("800x600")
 
-# Welcome label
+
 welcome_label = tk.Label(root, text="Welcome to Object Detection App", font=("Helvetica", 18))
 welcome_label.pack(pady=10)
 
-# Output area
+
 output_area = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=("Helvetica", current_font_size))
 output_area.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
 
-# Buttons
+
 start_button = tk.Button(root, text="Start Detection", command=start_detection_thread)
 start_button.pack(side=tk.LEFT, padx=10)
 
@@ -281,5 +280,5 @@ settings_button.pack(side=tk.LEFT, padx=10)
 help_button = tk.Button(root, text="Help", command=show_help)
 help_button.pack(side=tk.LEFT, padx=10)
 
-# Start Tkinter main loop
+
 root.mainloop()
